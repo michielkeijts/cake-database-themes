@@ -56,13 +56,13 @@ class DatabaseThemeHelper {
      */
     public static function getDirContentRecursive(string $dir, string $filter = ".*", bool $flat = TRUE) : array
     {
+        $dir = rtrim($dir, DS);
         $result = array();
         $cdir = scandir($dir);
-
         foreach ($cdir as $key => $value) {
             if (!in_array($value, array(".", ".."))) {
-                if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
-                    $dir_content = static::getDirContentRecursive($dir . DIRECTORY_SEPARATOR . $value);
+                if (is_dir($dir . DS . $value)) {
+                    $dir_content = static::getDirContentRecursive($dir . DS . $value);
                     if ($flat) {
                         $result = array_merge($result, $dir_content);
                     } else {
@@ -70,7 +70,7 @@ class DatabaseThemeHelper {
                     }
                 } else {
                     if (preg_match("/" . $filter . "/i", $value) === 1) {
-                        $result[] = $value;
+                        $result[] = $dir. DS. $value;
                     }
                 }
             }
